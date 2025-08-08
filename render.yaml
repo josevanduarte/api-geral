@@ -1,11 +1,9 @@
 
+
 services:
   - type: web
-    name: api-horas-extras
+    name: api-ponto-geral
     env: python
     buildCommand: ""
-    startCommand: "api_geral.py"
+    startCommand: "python api_geral.py"
     plan: free
-    region: oregon
-    autoDeploy: true
-    envVars: []
