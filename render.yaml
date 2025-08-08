@@ -1,0 +1,11 @@
+
+services:
+  - type: web
+    name: api-horas-extras
+    env: python
+    buildCommand: ""
+    startCommand: "python api_wrapper_flask.py"
+    plan: free
+    region: oregon
+    autoDeploy: true
+    envVars: []
