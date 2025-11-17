@@ -1,3 +1,4 @@
+
 from flask import Flask, request, jsonify
 import hashlib
 import requests
@@ -21,37 +22,19 @@ def get_headers():
         "Token": gerar_token_sha256(data_hoje)
     }
 
-# -------------------------------------
-# Função universal para filtrar empresas
-# -------------------------------------
-def get_empresas_param():
-    empresas = request.args.get("empresas")
-    if empresas:
-        # transforma "11,13,2,3" → ["11","13","2","3"]
-        return empresas.split(",")
-    return ["11", "13", "2", "3"]  # padrão
-
-
 @app.route("/")
 def home():
     return "✅ API Geral online! Use /ponto_geral ou /horas_extras com parâmetros."
 
-
-# -------------------------------------
-# /ponto_geral
-# -------------------------------------
 @app.route("/ponto_geral", methods=["GET"])
 def ponto_geral():
     body = {
         "pag": "ponto_geral",
-        "cmd": "get",
-        "cod_empresa": get_empresas_param()
+        "cmd": "get"
     }
-
-    # Adiciona outros filtros vindos pela URL (exceto 'empresas')
+    # Adiciona filtros da URL se existirem
     for key in request.args:
-        if key != "empresas":
-            body[key] = request.args.get(key)
+        body[key] = request.args.get(key)
 
     try:
         response = requests.post(API_URL, json=body, headers=get_headers())
@@ -59,10 +42,6 @@ def ponto_geral():
     except Exception as e:
         return jsonify({"erro": str(e)}), 500
 
-
-# -------------------------------------
-# /horas_extras
-# -------------------------------------
 @app.route("/horas_extras", methods=["GET"])
 def horas_extras():
     dtde = request.args.get("inicio")
@@ -75,8 +54,7 @@ def horas_extras():
         "pag": "ponto_relatorio_hora_extra",
         "cmd": "get",
         "dtde": dtde,
-        "dtate": dtate,
-        "cod_empresa": get_empresas_param()
+        "dtate": dtate
     }
 
     try:
@@ -84,7 +62,6 @@ def horas_extras():
         return jsonify(response.json())
     except Exception as e:
         return jsonify({"erro": str(e)}), 500
-
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
