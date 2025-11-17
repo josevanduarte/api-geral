@@ -55,7 +55,7 @@ def horas_extras():
         "cmd": "get",
         "dtde": dtde,
         "dtate": dtate,
-        "cod_empresa": "11,13,2,3"
+        "cod_empresa": "13,2,3"
     }
 
     try:
