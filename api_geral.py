@@ -21,13 +21,14 @@ def get_headers():
         "Token": gerar_token_sha256(data_hoje)
     }
 
-# -----------------------------
-# NOVA FUNÇÃO PARA FILTRAR EMPRESAS
-# -----------------------------
+# -------------------------------------
+# Função universal para filtrar empresas
+# -------------------------------------
 def get_empresas_param():
     empresas = request.args.get("empresas")
     if empresas:
-        return empresas.split(",")  # ex: "11,13,2,3" → ["11","13","2","3"]
+        # transforma "11,13,2,3" → ["11","13","2","3"]
+        return empresas.split(",")
     return ["11", "13", "2", "3"]  # padrão
 
 
@@ -36,9 +37,9 @@ def home():
     return "✅ API Geral online! Use /ponto_geral ou /horas_extras com parâmetros."
 
 
-# -----------------------------
-#        /ponto_geral
-# -----------------------------
+# -------------------------------------
+# /ponto_geral
+# -------------------------------------
 @app.route("/ponto_geral", methods=["GET"])
 def ponto_geral():
     body = {
@@ -47,7 +48,7 @@ def ponto_geral():
         "cod_empresa": get_empresas_param()
     }
 
-    # Adiciona outros filtros opcionais da URL (exceto empresas)
+    # Adiciona outros filtros vindos pela URL (exceto 'empresas')
     for key in request.args:
         if key != "empresas":
             body[key] = request.args.get(key)
@@ -59,9 +60,9 @@ def ponto_geral():
         return jsonify({"erro": str(e)}), 500
 
 
-# -----------------------------
-#        /horas_extras
-# -----------------------------
+# -------------------------------------
+# /horas_extras
+# -------------------------------------
 @app.route("/horas_extras", methods=["GET"])
 def horas_extras():
     dtde = request.args.get("inicio")
@@ -83,7 +84,6 @@ def horas_extras():
         return jsonify(response.json())
     except Exception as e:
         return jsonify({"erro": str(e)}), 500
-
 
 
 if __name__ == "__main__":
