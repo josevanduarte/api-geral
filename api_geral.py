@@ -54,7 +54,8 @@ def horas_extras():
         "pag": "ponto_relatorio_hora_extra",
         "cmd": "get",
         "dtde": dtde,
-        "dtate": dtate
+        "dtate": dtate,
+        "cod_empresa": "11,13,2,3"
     }
 
     try:
@@ -62,6 +63,7 @@ def horas_extras():
         return jsonify(response.json())
     except Exception as e:
         return jsonify({"erro": str(e)}), 500
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
