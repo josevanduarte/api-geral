@@ -54,7 +54,8 @@ def horas_extras():
         "pag": "ponto_relatorio_hora_extra",
         "cmd": "get",
         "dtde": dtde,
-        "dtate": dtate
+        "dtate": dtate,
+        "cod_empresa": ["10", "11", "2", "3"]  # <-- FILTRO FIXO AQUI
     }
 
     try:
@@ -63,5 +64,3 @@ def horas_extras():
     except Exception as e:
         return jsonify({"erro": str(e)}), 500
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=10000)
